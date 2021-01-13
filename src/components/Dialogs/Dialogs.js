@@ -2,24 +2,24 @@ import React from 'react';
 import c from './Dialogs.module.css';
 import Dialog from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
-import {sendMessageCreator, updateNewMessageBodyCreator} from "../../redux/dialogs-reducer";
+import {sendMessageCreator, updateNewMessageTextCreator} from "../../redux/dialogs-reducer";
 
 function Dialogs(props) {
-    let state = props.store.getState().dialogsPage;
+    let state = props.dialogsPage;
 
     let dialogsElements = state.dialogs.map(d => <Dialog name={d.name} id={d.id}/>)
 
     let messagesElements = state.messages.map(m => <Message message={m.message}/>)
 
-    let newMessageBody = state.newMessageBody;
+    let newMessageText = state.newMessageText;
 
     let onSendMessageClick = () => {
-        props.store.dispatch(sendMessageCreator());
+        props.sendMessage();
     }
 
     let onNewMessageChange = (e) => {
-        let body = e.target.value;
-        props.store.dispatch(updateNewMessageBodyCreator(body));
+        let text = e.target.value;
+        props.updateNewMessageText(text);
     }
 
     return (
@@ -30,7 +30,7 @@ function Dialogs(props) {
             <div className={c.messages}>
                 <div>{messagesElements}</div>
                 <div>
-                    <div><textarea value={newMessageBody}
+                    <div><textarea value={newMessageText}
                                    placeholder='Enter your message'
                                    onChange={onNewMessageChange}/></div>
                     <div>
